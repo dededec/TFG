@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Camera
+  - Spell
+  - NetworkManager
+  - DebugText
+  - UI_Fin
+  - UI_Partida
+  - UI_Matchmaking
+  - TextoPuesto
+  - UI_Combate
+  - UI_Prepartida
+  - MainTimer
+  - UI_Choose
+  - UI_Cargando
+  - UI_Login
+  - UI_Register
+  - UI_Menu
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0

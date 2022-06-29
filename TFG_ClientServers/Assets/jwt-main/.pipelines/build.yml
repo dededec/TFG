@@ -1,0 +1,76 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: 'JWT.sln'
+  buildConfiguration: 'Release'
+  buildPlatform: 'Any CPU'
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Use .NET Core 2.2.x'
+  inputs:
+    packageType: sdk
+    version: '2.2.x'
+    installationPath: '$(Agent.ToolsDirectory)/dotnet'
+
+- task: UseDotNet@2
+  displayName: 'Use .NET Core 3.1.x'
+  inputs:
+    packageType: sdk
+    version: '3.1.x'
+    installationPath: '$(Agent.ToolsDirectory)/dotnet'
+
+- task: UseDotNet@2
+  displayName: 'Use .NET 5.0.x'
+  inputs:
+    packageType: sdk
+    version: '5.0.x'
+    installationPath: '$(Agent.ToolsDirectory)/dotnet'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Restore NuGet packages for .NET Core'
+  inputs:
+    command: 'restore'
+    projects: '**/*.csproj'
+
+- task: NuGetToolInstaller@1
+  displayName: 'Install NuGet'
+
+- task: NuGetCommand@2
+  displayName: 'Restore NuGet packages for .NET Framework'
+  inputs:
+    command: 'restore'
+    restoreSolution: $(solution)
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build solution'
+  inputs:
+    command: 'build'
+    projects: '$(solution)'
+    arguments: '-c $(buildConfiguration) --no-restore'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run tests'
+  inputs:
+    command: 'test'
+    projects: 'tests/JWT.Tests.Net*/*.csproj'
+    arguments: ' -c $(buildConfiguration) --no-build --no-restore'
+    testRunner: 'VSTest'
+    testResultsFiles: '**/*.trx'
+    testResultsFormat: 'VSTest'
+    failTaskOnFailedTests: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'Create NuGet package'
+  inputs:
+    command: pack
+    packagesToPack: 'src/**/*.csproj'
+    configuration: $(BuildConfiguration)
+    nobuild: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish build artifacts'
